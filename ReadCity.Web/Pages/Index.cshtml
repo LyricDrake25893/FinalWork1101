@@ -1,0 +1,54 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Каталог товаров";
+}
+
+<h2 style="text-align:center; margin-top:20px; margin-bottom:20px;">Каталог товаров</h2>
+
+@if (Model.Products == null || !Model.Products.Any())
+{
+    <div style="text-align:center; padding:15px; background-color:#f8d7da; border:1px solid #f5c6cb; border-radius:4px; color:#721c24;">
+        Товары не найдены
+    </div>
+}
+else
+{
+    <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
+        @foreach (var product in Model.Products)
+        {
+            <div style="width:280px; border:1px solid #ddd; border-radius:8px; background:white; display:flex; flex-direction:column;">
+                <div style="text-align:center; padding:15px; height:180px; display:flex; align-items:center; justify-content:center;">
+                    <img src="/images/@(product.Photo ?? "picture.png")"
+                         style="max-height:150px; object-fit:contain;"
+                         alt="@product.Name" />
+                </div>
+
+                <div style="padding:15px; display:flex; flex-direction:column; flex:1;">
+                    <h6 style="font-weight:bold; margin:0 0 8px 0; font-size:16px;">@product.Name</h6>
+                    <p style="color:#666; font-size:14px; min-height:40px; margin:0 0 8px 0;">@product.Description</p>
+                    <p style="color:#666; font-size:14px; margin:0 0 4px 0;">Производитель: @product.Manufacturer</p>
+                    <p style="font-size:18px; font-weight:bold; color:#B8860B; margin:0 0 4px 0;">
+                        @product.DiscountedPrice.ToString("N2") руб.
+                    </p>
+                    <p style="color:#666; font-size:14px; margin:0 0 12px 0;">В наличии: @product.Stock шт.</p>
+
+                    @if (product.Stock > 0)
+                    {
+                        <a href="/AddToOrder?id=@product.Id"
+                           style="background-color:#B8860B; color:white; text-align:center; padding:10px; border-radius:4px; text-decoration:none; margin-top:auto;">
+                            Заказать
+                        </a>
+                    }
+                    else
+                    {
+                        <span style="color:red; font-weight:bold; text-align:center; margin-top:auto;">
+                            Нет в наличии
+                        </span>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

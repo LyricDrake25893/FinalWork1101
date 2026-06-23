@@ -1,0 +1,177 @@
+<Window x:Class="ReadCity.WPF.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="clr-namespace:ReadCity.WPF.Converters"
+        Title="Читай город — Каталог товаров"
+        MinWidth="900" MinHeight="600"
+        Width="1100" Height="720"
+        Background="{StaticResource PrimaryBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/Resources/icon.png"/>
+    </Window.Icon>
+
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+
+
+    <DockPanel>
+
+        <!-- шапка -->
+        <Border DockPanel.Dock="Top" Style="{StaticResource HeaderBorder}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Логотип и название -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image x:Name="LogoImage" Height="40" Margin="0,0,12,0"
+                           VerticalAlignment="Center"/>
+                    <TextBlock Text="Читай город" FontSize="22" FontWeight="Bold"
+                               Foreground="White" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Данные пользователя и авторизация -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal"
+                            VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock x:Name="UserNameText" Foreground="White" FontSize="13"
+                               VerticalAlignment="Center" Margin="0,0,12,0"
+                               Visibility="Collapsed"/>
+                    <Button x:Name="OrdersButton" Content="Заказы"
+                            Style="{StaticResource AccentButton}"
+                            Margin="0,0,8,0" Visibility="Collapsed"
+                            Click="OrdersButton_Click"/>
+                    <Button x:Name="ViewOrderButton" Content="Просмотр заказа"
+                            Style="{StaticResource AccentButton}"
+                            Margin="0,0,8,0" Visibility="Collapsed"
+                            Click="ViewOrderButton_Click"/>
+                    <Button x:Name="LoginButton" Content="Войти"
+                            Style="{StaticResource PrimaryButton}"
+                            Background="White" Foreground="{StaticResource AccentBrush}"
+                            Click="LoginButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- панель фильтрации -->
+        <Border DockPanel.Dock="Top" Background="#FFF5E4"
+                Padding="16,8" BorderBrush="#FFDDBB" BorderThickness="0,0,0,1">
+            <WrapPanel Orientation="Horizontal">
+
+                <!-- поиск -->
+                <TextBox x:Name="SearchBox" Width="220" Margin="0,0,12,4"
+                         FontFamily="{StaticResource AppFont}" FontSize="13"
+                         Padding="6,4" BorderBrush="#FFCCCC" BorderThickness="1"
+                         TextChanged="Filter_Changed"/>
+
+                <!-- Фильтр по издателю -->
+                <ComboBox x:Name="PublisherCombo" Width="180" Margin="0,0,12,4"
+                          FontFamily="{StaticResource AppFont}" FontSize="13"
+                          Padding="6,4"
+                          SelectionChanged="Filter_Changed"/>
+
+                <!-- Минимальная цена -->
+                <TextBlock Text="Цена от:" VerticalAlignment="Center" Margin="0,0,4,4"
+                           FontFamily="{StaticResource AppFont}"/>
+                <TextBox x:Name="PriceMinBox" Width="80" Margin="0,0,8,4"
+                         FontFamily="{StaticResource AppFont}" FontSize="13"
+                         Padding="6,4" BorderBrush="#FFCCCC" BorderThickness="1"
+                         TextChanged="Filter_Changed"/>
+
+                <!-- Максимальная цена -->
+                <TextBlock Text="до:" VerticalAlignment="Center" Margin="0,0,4,4"
+                           FontFamily="{StaticResource AppFont}"/>
+                <TextBox x:Name="PriceMaxBox" Width="80" Margin="0,0,16,4"
+                         FontFamily="{StaticResource AppFont}" FontSize="13"
+                         Padding="6,4" BorderBrush="#FFCCCC" BorderThickness="1"
+                         TextChanged="Filter_Changed"/>
+
+                <!-- Сортировка -->
+                <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="0,0,4,4"
+                           FontFamily="{StaticResource AppFont}"/>
+                <ComboBox x:Name="SortCombo" Width="200" Margin="0,0,0,4"
+                          FontFamily="{StaticResource AppFont}" FontSize="13"
+                          Padding="6,4"
+                          SelectionChanged="Filter_Changed"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- Счетчик записей -->
+        <Border DockPanel.Dock="Top" Padding="16,4" Background="#FFFDF6E3">
+            <TextBlock x:Name="CounterText" FontFamily="{StaticResource AppFont}"
+                       FontSize="12" Foreground="Gray"/>
+        </Border>
+
+        <!-- Список книг -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,8">
+            <ItemsControl x:Name="BooksList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,10" Padding="14"
+                                BorderBrush="#FFDDBB" BorderThickness="1"
+                                CornerRadius="6" Background="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Обложка книги -->
+                                <Image Grid.Column="0"
+                                       Source="{Binding PhotoFullPath}"
+                                       Width="80" Height="110"
+                                       Stretch="UniformToFill"
+                                       VerticalAlignment="Top" Margin="0,0,12,0"/>
+
+                                <!-- Подробная информация -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding Title}" FontWeight="Bold"
+                                               FontSize="15" TextWrapping="Wrap"
+                                               FontFamily="{StaticResource AppFont}"
+                                               Foreground="{StaticResource TextBrush}"/>
+                                    <TextBlock Text="{Binding Author}" FontSize="12"
+                                               Foreground="Gray" Margin="0,2,0,4"
+                                               FontFamily="{StaticResource AppFont}"/>
+                                    <TextBlock Text="{Binding Description}"
+                                               FontSize="12" TextWrapping="Wrap"
+                                               MaxHeight="60" Foreground="#FF444444"
+                                               FontFamily="{StaticResource AppFont}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                        <TextBlock Text="Производитель: " FontWeight="SemiBold"
+                                                   FontFamily="{StaticResource AppFont}" FontSize="13"/>
+                                        <TextBlock Text="{Binding Publisher}"
+                                                   FontFamily="{StaticResource AppFont}" FontSize="13"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                        <TextBlock Text="Цена: " FontWeight="SemiBold"
+                                                   FontFamily="{StaticResource AppFont}" FontSize="13"/>
+                                        <TextBlock Text="{Binding Price, StringFormat={}{0:N2} ₽}"
+                                                   FontFamily="{StaticResource AppFont}" FontSize="13"/>
+                                        <TextBlock Text="{Binding Discount, StringFormat={}  Скидка {0}%}"
+                                                   Foreground="Green" FontSize="12" Margin="8,0,0,0"
+                                                   FontFamily="{StaticResource AppFont}"
+                                                   Visibility="{Binding HasDiscount, Converter={StaticResource BoolToVisibility}}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Кнопка заказа -->
+                                <Button Grid.Column="2" Content="Заказать"
+                                        Style="{StaticResource PrimaryButton}"
+                                        VerticalAlignment="Center" Margin="12,0,0,0"
+                                        Tag="{Binding}"
+                                        Click="OrderButton_Click"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </DockPanel>
+</Window>

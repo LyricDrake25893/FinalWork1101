@@ -1,0 +1,60 @@
+<Window x:Class="ReadCity.WPF.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Читай город — Вход"
+        Width="380" Height="280"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource PrimaryBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/Resources/icon.png"/>
+    </Window.Icon>
+
+
+    <DockPanel>
+        <!-- шапка -->
+        <Border DockPanel.Dock="Top" Style="{StaticResource HeaderBorder}">
+            <TextBlock Text="Вход в систему" FontSize="18" FontWeight="Bold"
+                       Foreground="White"/>
+        </Border>
+
+        <!-- Основная сетка разметки формы -->
+        <Grid Margin="24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Поле ввода логина -->
+            <TextBlock Grid.Row="0" Text="Логин:" Margin="0,0,0,4"
+                       FontFamily="{StaticResource AppFont}"/>
+            <TextBox x:Name="LoginBox" Grid.Row="1"
+                     Style="{StaticResource AppTextBox}" Margin="0,0,0,12"/>
+
+            <!-- Поле ввода пароля -->
+            <TextBlock Grid.Row="2" Text="Пароль:" Margin="0,0,0,4"
+                       FontFamily="{StaticResource AppFont}"/>
+            <PasswordBox x:Name="PasswordBox" Grid.Row="3"
+                         Padding="6,4" FontSize="13"
+                         BorderBrush="#FFB8860B" BorderThickness="1"
+                         Margin="0,0,0,16"
+                         KeyDown="PasswordBox_KeyDown"/>
+
+            <!-- Панель с кнопками управления -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <Button Content="Отмена" Width="90" Margin="0,0,8,0"
+                        Style="{StaticResource AccentButton}"
+                        Background="#FFB8860B" Click="CancelButton_Click"/>
+                <Button Content="Войти" Width="90"
+                        Style="{StaticResource PrimaryButton}"
+                        Click="LoginButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

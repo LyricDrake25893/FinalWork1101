@@ -1,0 +1,82 @@
+<Window x:Class="ReadCity.WPF.Views.OrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Читай город — Управление заказами"
+        MinWidth="900" MinHeight="550"
+        Width="1050" Height="650"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource PrimaryBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/Resources/icon.png"/>
+    </Window.Icon>
+
+
+    <DockPanel>
+        <!-- Шапка -->
+        <Border DockPanel.Dock="Top" Style="{StaticResource HeaderBorder}">
+            <Grid>
+                <TextBlock Text="Управление заказами" FontSize="18" FontWeight="Bold"
+                           Foreground="White"/>
+                <Button Content="← Назад" HorizontalAlignment="Right"
+                        Style="{StaticResource AccentButton}"
+                        Background="White" Foreground="{StaticResource AccentBrush}"
+                        Click="BackButton_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Панель редактирования -->
+        <Border DockPanel.Dock="Bottom" Background="#FFF5E4"
+                Padding="16,10" BorderBrush="#FFDDBB" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Дата доставки:"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           FontFamily="{StaticResource AppFont}"/>
+                <DatePicker x:Name="DeliveryDatePicker" Grid.Column="1"
+                            Width="140" Margin="0,0,16,0" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Column="2" Text="Статус:"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           FontFamily="{StaticResource AppFont}"/>
+                <ComboBox x:Name="StatusCombo" Grid.Column="3" Width="160"
+                          Style="{StaticResource AppComboBox}" Margin="0,0,16,0"/>
+
+                <Button Grid.Column="5" Content="Сохранить"
+                        Style="{StaticResource PrimaryButton}"
+                        Click="SaveButton_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Таблица заказов -->
+        <DataGrid x:Name="OrdersGrid"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HeadersVisibility="Column"
+                  RowHeaderWidth="0"
+                  FontFamily="{StaticResource AppFont}"
+                  FontSize="13"
+                  Margin="8"
+                  SelectionChanged="OrdersGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№ заказа"    Binding="{Binding OrderNumber}"   Width="80"/>
+                <DataGridTextColumn Header="Дата заказа" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy}" Width="110"/>
+                <DataGridTextColumn Header="Дата доставки" Binding="{Binding DeliveryDate, StringFormat=dd.MM.yyyy}" Width="120"/>
+                <DataGridTextColumn Header="Клиент"      Binding="{Binding ClientFullName}" Width="*"/>
+                <DataGridTextColumn Header="Статус"      Binding="{Binding OrderStatus}"   Width="120"/>
+                <DataGridTextColumn Header="Код"         Binding="{Binding ReceiptCode}"   Width="70"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>

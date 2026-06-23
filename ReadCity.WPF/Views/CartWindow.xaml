@@ -1,0 +1,110 @@
+<Window x:Class="ReadCity.WPF.Views.CartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Читай город — Текущий заказ"
+        MinWidth="700" MinHeight="450"
+        Width="800" Height="550"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource PrimaryBrush}"
+        FontFamily="{StaticResource AppFont}">
+
+    <Window.Icon>
+        <BitmapImage UriSource="pack://application:,,,/Resources/icon.png"/>
+    </Window.Icon>
+
+
+    <DockPanel>
+        <!-- шапка -->
+        <Border DockPanel.Dock="Top" Style="{StaticResource HeaderBorder}">
+            <Grid>
+                <TextBlock Text="Текущий заказ" FontSize="18" FontWeight="Bold"
+                           Foreground="White"/>
+                <TextBlock x:Name="ClientText" HorizontalAlignment="Right"
+                           Foreground="White" FontSize="13" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- нижняя панель -->
+        <Border DockPanel.Dock="Bottom" Background="#FFF5E4"
+                Padding="16,10" BorderBrush="#FFDDBB" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="TotalText" Grid.Column="0"
+                           FontSize="16" FontWeight="Bold"
+                           VerticalAlignment="Center"
+                           FontFamily="{StaticResource AppFont}"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="Назад" Width="90" Margin="0,0,8,0"
+                            Style="{StaticResource AccentButton}"
+                            Background="#FFB8860B" Click="BackButton_Click"/>
+                    <Button Content="Оформить заказ" Width="150"
+                            Style="{StaticResource PrimaryButton}"
+                            Click="PlaceOrderButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- список элементов -->
+        <ScrollViewer Padding="16,8" VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="CartList">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,0,0,8" Padding="12"
+                                BorderBrush="#FFDDBB" BorderThickness="1"
+                                CornerRadius="4" Background="White">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding Book.Title}"
+                                               FontWeight="SemiBold" FontSize="14"
+                                               TextWrapping="Wrap"
+                                               FontFamily="{StaticResource AppFont}"/>
+                                    <TextBlock Text="{Binding Book.Author}"
+                                               Foreground="Gray" FontSize="12"
+                                               FontFamily="{StaticResource AppFont}"/>
+                                    <TextBlock FontSize="12"
+                                               FontFamily="{StaticResource AppFont}">
+                                        <Run Text="Цена: "/>
+                                        <Run Text="{Binding Book.Price, StringFormat={}{0:N2} ₽}"/>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <!-- выбор количества -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            VerticalAlignment="Center" Margin="16,0">
+                                    <Button Content="−" Width="28" Height="28"
+                                            Style="{StaticResource AccentButton}"
+                                            Tag="{Binding}"
+                                            Click="DecreaseQty_Click"/>
+                                    <TextBlock Text="{Binding Quantity}"
+                                               Width="32" TextAlignment="Center"
+                                               VerticalAlignment="Center" FontSize="14"
+                                               FontFamily="{StaticResource AppFont}"/>
+                                    <Button Content="+" Width="28" Height="28" Foreground="White"
+                                            Style="{StaticResource AccentButton}"
+                                            Tag="{Binding}"
+                                            Click="IncreaseQty_Click"/>
+                                </StackPanel>
+
+                                <!-- сумма -->
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding LineTotal, StringFormat={}{0:N2} ₽}"
+                                           FontWeight="Bold" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           FontFamily="{StaticResource AppFont}"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
